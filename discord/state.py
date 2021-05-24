@@ -1177,7 +1177,7 @@ class ConnectionState:
             return pm
 
         for guild in self.guilds:
-            channel = guild.get_channel(id)
+            channel = guild.get_channel(id) or guild.get_thread(id)
             if channel is not None:
                 return channel
 
