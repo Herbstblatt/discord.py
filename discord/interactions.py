@@ -450,6 +450,39 @@ class InteractionResponse:
             )
             self._responded = True
 
+    async def send_autocomplete_options(self, options: List) -> None:
+        """|coro|
+
+        Sends back the options for application commands autocomplete.
+
+        Parameters
+        -----------
+        options: :class:`List`
+            List of options.
+
+        Raises
+        -------
+        HTTPException
+            Ponging the interaction failed.
+        InteractionResponded
+            This interaction has already been responded to before.
+        """
+        if self._responded:
+            raise InteractionResponded(self._parent)
+
+        parent = self._parent
+        data = {'options': options}
+
+        adapter = async_context.get()
+        await adapter.create_interaction_response(
+            parent.id,
+            parent.token,
+            session=parent._session,
+            type=InteractionResponseType.application_command_autocomplete_result.value,
+            data=data
+        )
+        self._responded = True
+
     async def send_message(
         self,
         content: Optional[Any] = None,
