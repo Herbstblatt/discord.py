@@ -450,15 +450,15 @@ class InteractionResponse:
             )
             self._responded = True
 
-    async def send_autocomplete_options(self, options: List) -> None:
+    async def send_autocomplete_choices(self, choices: List) -> None:
         """|coro|
 
-        Sends back the options for application commands autocomplete.
+        Sends back the choices for application commands autocomplete.
 
         Parameters
         -----------
-        options: :class:`List`
-            List of options.
+        choices: :class:`List`
+            List of choices.
 
         Raises
         -------
@@ -471,7 +471,7 @@ class InteractionResponse:
             raise InteractionResponded(self._parent)
 
         parent = self._parent
-        data = {'options': options}
+        data = {'choices': choices}
 
         adapter = async_context.get()
         await adapter.create_interaction_response(
